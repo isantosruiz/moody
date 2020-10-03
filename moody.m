@@ -5,7 +5,9 @@ function moody(my_epsilon,my_Re,epsilon_list)
 %      MOODY
 %      MOODY(my_epsilon)
 %      MOODY(my_epsilon,my_Re)
+%      MOODY(my_epsilon,Re_list)
 %      MOODY(my_epsilon,my_Re,epsilon_list)
+%      MOODY(my_epsilon,Re_list,epsilon_list)
 %
 %   Author:
 %      Ildeberto de los Santos Ruiz
@@ -13,7 +15,7 @@ function moody(my_epsilon,my_Re,epsilon_list)
 %
 %   References:
 %      [1] Moody, L. F. (1944), "Friction factors for pipe flow",
-%          Transactions of the ASME, 66 (8): 671–684
+%          Transactions of the ASME, 66(8): 671–684
 
 clf
 Re = logspace(2,8,1000);
@@ -37,10 +39,12 @@ max_Re = 1e8;
 min_f = 0.005;
 max_f = 0.2;
 if nargin > 1
-    my_f = friction(my_Re,my_epsilon);
-    plot([min_Re,my_Re],[my_f,my_f],'LineStyle','--','Color',[1,0.5,0])
-    plot([my_Re,my_Re],[min_f,my_f],'LineStyle','--','Color',[1,0.5,0])
-    plot(my_Re,my_f,'Marker','.','MarkerSize',18,'Color','red')
+    for i = 1:numel(my_Re)
+        my_f = friction(my_Re(i),my_epsilon);
+        plot([min_Re,my_Re(i)],[my_f,my_f],'LineStyle','--','Color',[1,0.5,0])
+        plot([my_Re(i),my_Re(i)],[min_f,my_f],'LineStyle','--','Color',[1,0.5,0])
+        plot(my_Re(i),my_f,'Marker','.','MarkerSize',12,'Color','red')
+    end
 end
 grid on
 xlabel('Reynolds number, $\mathrm{Re}$','Interpreter','LaTeX','FontSize',10)
@@ -54,9 +58,9 @@ rectangle('Position',[2000,min_f,2000,max_f],...
     'LineStyle','--','EdgeColor',[0,0,0],'FaceColor',[0.75,0.75,0.75,0.5])
 text(3000,0.011,'Critical zone','Interpreter','LaTeX',...
     'Rotation',90,'VerticalAlignment','middle','HorizontalAlignment','center','FontSize',10)
-text(4000,0.011,'~Turbulent flow','Interpreter','LaTeX',...
+text(4000,0.011,'~Turbulent f{}low','Interpreter','LaTeX',...
     'VerticalAlignment','middle','HorizontalAlignment','left','FontSize',10)
-text(2000,0.011,'Laminar flow~','Interpreter','LaTeX',...
+text(2000,0.011,'Laminar f{}low~','Interpreter','LaTeX',...
     'VerticalAlignment','middle','HorizontalAlignment','right','FontSize',10)
 yyaxis right
 h = gca;
